@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
+  get 'movies/update_any' => 'movies#update_any', as: :update_any
+  put 'movies/update_any' => 'movies#update_post', as: :update_post
+  get 'movies/delete_any' => 'movies#delete_any', as: :delete_any
+  delete 'movies/delete_any' => 'movies#delete_done', as: :delete_done
+
   resources :movies
   
   # Example resource route with options:
