@@ -48,18 +48,36 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    @ratings =  {'G'=>true,'PG'=>true,'PG-13'=>true,'R'=>true,'NC-17'=>true}
+    
     if ((params[:sort_by] == 'title') || (params[:sort_by] == 'release_date'))
-      @movies = Movie.all.order(params[:sort_by])
+      params[:ratings] = session[:ratings]
+      @ratings = params[:ratings]
+      session[:sort_by] = params[:sort_by]
+      @movies = Movie.where(:rating => params[:ratings].keys).order(params[:sort_by])
       if (params[:sort_by] == 'title')
         @style_title = 'hilite'
       elsif (params[:sort_by] == 'release_date')
         @style_release = 'hilite'
       end
     elsif (!(params[:ratings].nil?))
-      @movies = Movie.where(:rating => params[:ratings].keys)
+      params[:sort_by] = session[:sort_by]
+      @ratings = params[:ratings]
+      session[:ratings] = params[:ratings]
+      if ((params[:sort_by] == 'title') || (params[:sort_by] == 'release_date'))
+        @movies = Movie.where(:rating => params[:ratings].keys).order(params[:sort_by])
+          if (params[:sort_by] == 'title')
+          @style_title = 'hilite'
+        elsif (params[:sort_by] == 'release_date')
+          @style_release = 'hilite'
+        end
+      else
+        @movies = Movie.where(:rating => params[:ratings].keys)
+      end
     else
+      @ratings =  {'G'=>true,'PG'=>true,'PG-13'=>true,'R'=>true,'NC-17'=>true}
       @movies = Movie.all
+      session[:ratings] = @ratings
+      session[:sort_by] = params[:sort_by]
     end
     
   end
