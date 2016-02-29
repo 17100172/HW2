@@ -65,7 +65,7 @@ class MoviesController < ApplicationController
       session[:ratings] = params[:ratings]
       if ((params[:sort_by] == 'title') || (params[:sort_by] == 'release_date'))
         @movies = Movie.where(:rating => params[:ratings].keys).order(params[:sort_by])
-          if (params[:sort_by] == 'title')
+        if (params[:sort_by] == 'title')
           @style_title = 'hilite'
         elsif (params[:sort_by] == 'release_date')
           @style_release = 'hilite'
