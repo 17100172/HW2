@@ -51,6 +51,11 @@ class MoviesController < ApplicationController
     @ratings =  {'G'=>true,'PG'=>true,'PG-13'=>true,'R'=>true,'NC-17'=>true}
     if ((params[:sort_by] == 'title') || (params[:sort_by] == 'release_date'))
       @movies = Movie.all.order(params[:sort_by])
+      if (params[:sort_by] == 'title')
+        @style_title = 'hilite'
+      elsif (params[:sort_by] == 'release_date')
+        @style_release = 'hilite'
+      end
     elsif (!(params[:ratings].nil?))
       @movies = Movie.where(:rating => params[:ratings].keys)
     else
